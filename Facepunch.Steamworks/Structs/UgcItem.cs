@@ -358,6 +358,11 @@ namespace Steamworks.Ugc
         public string PreviewImageUrl { get; internal set; }
 
 		/// <summary>
+		/// The URLs to the addition preview images for this item
+		/// </summary>
+		public IReadOnlyList<string> AdditionalPreviewUrls { get; internal set; }
+
+		/// <summary>
 		/// Edit this item
 		/// </summary>
 		public Ugc.Editor Edit()

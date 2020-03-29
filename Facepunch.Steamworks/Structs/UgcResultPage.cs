@@ -43,7 +43,18 @@ namespace Steamworks.Ugc
 							item.PreviewImageUrl = preview;
 						}
 
-						// TODO GetQueryUGCAdditionalPreview
+						var urls = new List<string>();
+						for (uint j = 0; j < SteamUGC.Internal.GetQueryUGCNumAdditionalPreviews(Handle, i); j++)
+						{
+							ItemPreviewType type = ItemPreviewType.Image;
+							if (SteamUGC.Internal.GetQueryUGCAdditionalPreview(Handle, i, j, out var url, out _, ref type)
+								&& type == ItemPreviewType.Image)
+							{
+								urls.Add(url);
+							}
+						}
+						item.AdditionalPreviewUrls = urls;
+
 						// TODO GetQueryUGCChildren
 						// TODO GetQueryUGCKeyValueTag
 						// TODO GetQueryUGCMetadata
