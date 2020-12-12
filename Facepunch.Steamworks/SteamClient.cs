@@ -15,18 +15,16 @@ namespace Steamworks
 		/// Initialize the steam client.
 		/// If asyncCallbacks is false you need to call RunCallbacks manually every frame.
 		/// </summary>
-		public static void Init( uint appid, bool asyncCallbacks = true )
+		public static bool Init( uint appid, bool asyncCallbacks = true )
 		{
 			if ( initialized )
-				throw new System.Exception( "Calling SteamClient.Init but is already initialized" );
+				throw new System.InvalidOperationException( "Calling SteamClient.Init but is already initialized" );
 
 			System.Environment.SetEnvironmentVariable( "SteamAppId", appid.ToString() );
 			System.Environment.SetEnvironmentVariable( "SteamGameId", appid.ToString() );
 
-			if ( !SteamAPI.Init() )
-			{
-				throw new System.Exception( "SteamApi_Init returned false. Steam isn't running, couldn't find Steam, AppId is ureleased, Don't own AppId." );
-			}
+			if (!SteamAPI.Init())
+				return false;
 
 			AppId = appid;
 
@@ -68,6 +66,8 @@ namespace Steamworks
 				//
 				Dispatch.LoopClientAsync();
 			}
+
+			return true;
 		}
 
 		internal static void AddInterface<T>() where T : SteamClass, new()
